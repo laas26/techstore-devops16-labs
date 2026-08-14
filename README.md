@@ -1,12 +1,12 @@
 # 🛍️ TechStore
 
-E-commerce fictício desenvolvido como laboratório prático da disciplina de DevOps, simulando a transformação digital de uma empresa real ao longo do semestre.
-
-**Status atual:** 🚧 Em desenvolvimento (MVP - Marco 1)
+![Status](https://img.shields.io/badge/status-MVP%20%7C%20Em%20Desenvolvimento-black?style=flat-square)
 
 ---
 
-## 📖 Sobre o Projeto
+## 📌 Sobre o Projeto
+
+> E-commerce fictício desenvolvido como laboratório prático da disciplina de DevOps, simulando a transformação digital de uma empresa real ao longo do semestre.
 
 A TechStore é uma plataforma de e-commerce que gerencia o ciclo de vida completo do pedido: autenticação, navegação no catálogo, carrinho, checkout e pagamento via PIX. O projeto prioriza integridade de dados, segurança de sessão e uma arquitetura preparada para evolução.
 
@@ -18,57 +18,89 @@ Toda a definição de escopo, regras de negócio e requisitos do produto está d
 
 ## 🧱 Stack Atual
 
-| Camada | Tecnologia |
-|---|---|
-| Back-end | Node.js + Express (JavaScript) |
-| Front-end | React + Vite (JavaScript) |
-| Persistência (MVP) | Arquivos JSON (`backend/data/`) |
-| Containers | Docker + Docker Compose |
-| Servidor Web (produção) | Nginx (imagem não-root) |
-
+* **Back-end:** ![Node.js](https://img.shields.io/badge/Node.js-18181B?style=flat-square&logo=nodedotjs&logoColor=white) ![Express](https://img.shields.io/badge/Express-18181B?style=flat-square&logo=express&logoColor=white) — API REST em JavaScript
+* **Front-end:** ![React](https://img.shields.io/badge/React-18181B?style=flat-square&logo=react&logoColor=white) ![Vite](https://img.shields.io/badge/Vite-18181B?style=flat-square&logo=vite&logoColor=white) — SPA em JavaScript
+* **Persistência:** ![JSON](https://img.shields.io/badge/JSON-18181B?style=flat-square&logo=json&logoColor=white) — Armazenamento local para MVP (`backend/data/`)
+* **Containers:** ![Docker](https://img.shields.io/badge/Docker-18181B?style=flat-square&logo=docker&logoColor=white) — Ambiente com Docker & Docker Compose
+* **Servidor Web:** ![Nginx](https://img.shields.io/badge/Nginx-18181B?style=flat-square&logo=nginx&logoColor=white) — Servidor de produção (imagem não-root)
 ---
 
 ## 📂 Estrutura do Projeto
 
-```
+```text
 techstore/
-├── docs/
-│   ├── prd.md                  ← requisitos e regras de negócio do produto
-│   ├── specs/                  ← especificação técnica de cada funcionalidade (contratos de API)
-│   └── setup/
-│       ├── setup-backend.md    ← guia de setup do ambiente back-end
-│       └── setup-frontend.md   ← guia de setup do ambiente front-end
-├── backend/
-├── frontend/
-├── docker-compose.yml
+├── .github/
+│   └── workflows/          ← pipelines de CI/CD (GitHub Actions)
+├── .vscode/                ← padronização de ambiente e formatação (Biome)
+├── docs/                   ← portfólio de documentação e guias do projeto
+├── backend/                ← API REST e regras de negócio
+├── frontend/               ← aplicação web em React
+├── docker-compose.yml      ← orquestração de containers locais
+├── start.js                ← script de automação e orquestração local
+├── package.json            ← centralizador de scripts e automações
 └── README.md
 ```
 
-> Pastas como `terraform/`, `kubernetes/`, `monitoring/` e `security/` serão incorporadas gradualmente conforme a disciplina avança.
+
+> **Nota:** Pastas de infraestrutura avançada como (**terraform/**, **kubernetes/**, **monitoring/** e **security/**) serão incorporadas gradualmente conforme os módulos da disciplina avançarem.
 
 ---
 
-## ▶️ Como Rodar o Projeto
+## 🏗️ Architecture & Development
 
-O setup completo, passo a passo, com o porquê de cada decisão, está documentado em:
+O projeto adota uma abordagem moderna baseada em **containers**, projetada para eliminar o clássico problema de divergência de ambientes ("na minha máquina funciona") e garantir isolamento total.
 
-- **[docs/setup/setup-backend.md](docs/setup/setup-backend.md)** - ambiente Node.js + Express
-- **[docs/setup/setup-frontend.md](docs/setup/setup-frontend.md)** - ambiente React + Vite
+* **Isolamento de Dependências:** O gerenciamento de pacotes ocorre inteiramente dentro de cada container durante o build. Pastas locais como `node_modules` são ignoradas (`.dockerignore`), mantendo o repositório limpo e leve.
+* **Automação de Infraestrutura:** Scripts locais centralizados na raiz simplificam a orquestração do ecossistema sem exigir comandos complexos manuais.
+* **Código Padronizado:** O ambiente utiliza Biome e configurações versionadas em **.vscode/** para garantir formatação e lint automatizados em todo o time.
+---
 
-Resumo rápido, com os dois ambientes já configurados:
+## 📑 Instruções de Execução
+
+Certifique-se de ter o [**Docker**](https://www.docker.com/) e o [**Docker Compose**](https://docs.docker.com/compose/) instalados na sua máquina.
+
+### ⚡ Início Rápido (Recomendado)
+Para subir o ambiente completo de forma automatizada com um único comando na raiz:
 
 ```bash
-docker compose up --build
+# 1. Clone o repositório e acesse a pasta
+git clone <url-do-repositorio>
+cd techstore-devops16-labs
+
+# Sobe os containers e inicia a aplicação
+npm start
+```
+Com os containers rodando, acesse os serviços nos endereços:
+
+```text
+----------------------------------------
+🚀 Sistema iniciado com sucesso!
+👉🏼 Frontend: http://localhost
+👉🏼 Backend:  http://localhost:3000/health
+----------------------------------------
 ```
 
-- Backend disponível em: `http://localhost:3000`
-- Frontend disponível em: `http://localhost`
+### 🛠️ Outros Comandos Úteis
+```bash
+ npm run stop    # Encerra e remove os containers 
+ npm run restart # Reinicia os serviços rapidamente 
+ npm run logs    # Acompanha os logs em tempo real 
+```
+
+### 🐳 Via Comandos Nativos do Docker Compose
+Se preferir gerenciar diretamente pelo Docker:
+
+```bash
+docker compose up -d --build    # Sobe os containers
+docker compose down             # Encerra e remove os containers
+docker compose logs -f          # Acompanha os logs em tempo real
+```
 
 ---
 
 ## ✅ Estado Atual (Marco 1 - MVP)
 
-Conforme o Roadmap definido em [docs/prd.md](docs/prd.md):
+Conforme o **Roadmap** definido em [**docs/prd.md**](docs/prd.md):
 
 - [ ] Cadastro de Clientes
 - [ ] Login e Logout de Usuários
@@ -96,12 +128,21 @@ Ao longo do semestre, o projeto aplica conceitos de:
 
 ## 📚 Documentação
 
-| Documento | Descrição |
-|---|---|
-| [docs/prd.md](docs/prd.md) | Requisitos de produto, regras de negócio e critérios de aceite |
-| [docs/specs/](docs/specs/README.md) | Especificação técnica de cada funcionalidade (contratos de API) |
-| [docs/setup/setup-backend.md](docs/setup/setup-backend.md) | Setup completo do ambiente back-end |
-| [docs/setup/setup-frontend.md](docs/setup/setup-frontend.md) | Setup completo do ambiente front-end |
+Toda a arquitetura, regras de negócio e guias de configuração estão centralizados no nosso portal de documentação:
+
+- **[docs/README.md](docs/README.md)** — Acesso rápido a todos os manuais, PRD e especificações técnicas.
+
+---
+
+## 🌿 Estratégia de Git & Versionamento
+
+Este repositório combina a **sincronização de um projeto base** com uma **extensão autoral e individual de engenharia**. Para garantir que a arquitetura personalizada evolua de forma isolada e sem conflitos com atualizações da fonte original, adota-se o seguinte fluxo:
+
+* **`main` (Upstream Mirror):** Mantida como espelho estrito do repositório base (`upstream`). Não recebe commits diretos e serve exclusivamente para rastreabilidade e integração de atualizações estruturais da fonte.
+
+* **`develop` (Laboratório & Arquitetura Individual):** Branch principal onde reside a **versão personalizada do projeto**. Concentra todas as implementações autorais, padronização de código (Biome), customizações de ambiente, refatorações e novos recursos.
+
+* **`feature/`:** Branches temporárias criadas a partir da `develop` para isolar o desenvolvimento de cada módulo, funcionalidade ou ajuste de infraestrutura antes da consolidação.
 
 ---
 
